@@ -192,9 +192,21 @@ section {
     font-weight: 300;
 }
 
+/* exotic middle section */
+.exotic-middle-section {
+    background: linear-gradient(rgba(15, 15, 15, 0.8), rgba(15, 15, 15, 0.8)),
+        url('images/hero-bg-exotic.png') fixed center/cover;
+}
+
+@media (max-width: 768px) {
+    .exotic-middle-section {
+        background-attachment: scroll;
+    }
+}
+
 /* Brand Story */
 .brand-story {
-    background-color: var(--color-bg);
+    background-color: transparent;
     position: relative;
 }
 
@@ -222,7 +234,7 @@ section {
 
 /* Collections */
 .collections {
-    background-color: var(--color-bg-secondary);
+    background-color: transparent;
 }
 
 .grid-3 {
@@ -294,7 +306,7 @@ section {
 
 /* How It Works */
 .how-it-works {
-    background-color: var(--color-bg);
+    background-color: transparent;
     text-align: center;
 }
 
