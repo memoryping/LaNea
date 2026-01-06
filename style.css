@@ -1,21 +1,72 @@
-/* 
-    Luxury Gifting Website Theme 
-    Colors: Deep Crimson, Matte Black, Champagne Gold, Ivory
-*/
+/* Preloader */
+#preloader {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1s ease, visibility 1s;
+}
+
+.preloader-content {
+    text-align: center;
+}
+
+.preloader-logo {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    color: var(--color-accent);
+    letter-spacing: 0.3em;
+    display: block;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: preloader-fade 1.5s forwards;
+}
+
+.preloader-line {
+    width: 0;
+    height: 1px;
+    background: var(--gold-leaf);
+    margin: 0 auto;
+    animation: preloader-line-grow 1s 0.5s forwards;
+}
+
+@keyframes preloader-fade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes preloader-line-grow {
+    to {
+        width: 150px;
+    }
+}
+
+#preloader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Rest of the styles... */
 
 :root {
-    --color-bg: #0F0F0F;
-    /* Matte Black */
-    --color-bg-secondary: #141414;
-    /* Slightly lighter black */
+    --color-bg: #0A0A0A;
+    /* Even deeper black */
+    --color-bg-secondary: #0F0F0F;
     --color-accent: #D4AF37;
-    /* Champagne Gold */
-    --color-crimson: #4A0404;
-    /* Deep Wine */
-    --color-crimson-light: #722F37;
-    --color-text: #F5F5F0;
-    /* Soft Ivory */
-    --color-text-muted: #B0B0B0;
+    --gold-leaf: linear-gradient(135deg, #D4AF37 0%, #F5E6AD 50%, #D4AF37 100%);
+    --color-crimson: #3D0000;
+    --color-text: #FDFDFD;
+    --color-text-muted: rgba(255, 255, 255, 0.6);
+
+    --shadow-glow: 0 0 25px rgba(212, 175, 55, 0.2);
+    --transition-luxury: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-fast: all 0.3s ease;
 
     --font-heading: 'Playfair Display', serif;
     --font-body: 'Poppins', sans-serif;
@@ -25,12 +76,41 @@
     --spacing-md: 2rem;
     --spacing-lg: 4rem;
     --spacing-xl: 8rem;
+}
 
-    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.5);
-    --shadow-glow: 0 0 20px rgba(212, 175, 55, 0.3);
+/* Custom Luxury Cursor */
+.custom-cursor {
+    width: 8px;
+    height: 8px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.2s ease;
+    mix-blend-mode: difference;
+}
 
-    --transition-slow: all 0.6s ease-out;
-    --transition-fast: all 0.3s ease;
+.custom-cursor-outline {
+    width: 30px;
+    height: 30px;
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+body:hover .custom-cursor,
+body:hover .custom-cursor-outline {
+    opacity: 1;
+}
+
+.cursor-hover .custom-cursor-outline {
+    transform: scale(1.8);
+    background: rgba(212, 175, 55, 0.1);
+    border-color: var(--color-accent);
 }
 
 *,
@@ -62,7 +142,9 @@ h6 {
     font-family: var(--font-heading);
     color: var(--color-text);
     font-weight: 400;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--spacing-sm);
+    /* Reduced margin */
 }
 
 a {
@@ -134,18 +216,24 @@ img {
 /* Animations */
 .animate-on-scroll {
     opacity: 0;
-    transform: translateY(30px);
-    transition: var(--transition-slow);
+    transform: translateY(30px) scale(0.98);
+    transition: var(--transition-luxury);
 }
 
 .animate-on-scroll.visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
 }
 
 /* Sections */
 section {
     padding: var(--spacing-xl) 0;
+}
+
+/* Remove margin for joined sections */
+.exotic-middle-section section,
+.exotic-footer-section section {
+    margin: 0;
 }
 
 /* Hero Section */
@@ -208,6 +296,7 @@ section {
 .brand-story {
     background-color: transparent;
     position: relative;
+    padding-bottom: var(--spacing-lg);
 }
 
 .story-content {
@@ -235,6 +324,8 @@ section {
 /* Collections */
 .collections {
     background-color: transparent;
+    padding-top: var(--spacing-lg);
+    text-align: center;
 }
 
 .grid-3 {
@@ -260,12 +351,31 @@ section {
     box-shadow: var(--shadow-glow);
 }
 
+/* Gold Shimmer Effect */
+.collection-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: rotate(45deg);
+    transition: 0.6s;
+    pointer-events: none;
+}
+
+.collection-card:hover::after {
+    left: 100%;
+    top: 100%;
+}
+
 .card-bg {
     width: 100%;
     height: 100%;
     background-size: cover;
     background-position: center;
-    transition: transform 0.8s ease;
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .collection-card:hover .card-bg {
@@ -462,23 +572,72 @@ footer .container {
     letter-spacing: 0.05em;
 }
 
-/* Exotic Touches */
-body {
-    letter-spacing: 0.02em;
-    /* Slightly wider reading */
+/* Atmospheric Particles */
+.particle {
+    position: absolute;
+    background: rgba(212, 175, 55, 0.3);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
 }
 
+@keyframes float-particle {
+    0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: translateY(-100vh) translateX(20px);
+        opacity: 0;
+    }
+}
+
+/* Gold Leaf Headings */
 h2 {
     font-weight: 400;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     font-size: 2.2rem;
+    background: var(--gold-leaf);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
 }
 
 .gold-line {
-    width: 60px;
-    background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+    width: 80px;
+    background: var(--gold-leaf);
     height: 1px;
+    margin: var(--spacing-sm) auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.gold-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, #fff, transparent);
+    animation: gold-flow 3s infinite;
+}
+
+@keyframes gold-flow {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
 }
 
 .btn {
@@ -507,8 +666,8 @@ h2 {
 /* Mobile Responsive */
 @media (max-width: 768px) {
     :root {
-        --spacing-lg: 3rem;
-        --spacing-xl: 4rem;
+        --spacing-lg: 4rem;
+        --spacing-xl: 6rem;
     }
 
     .hero h1 {
