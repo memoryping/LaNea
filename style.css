@@ -26,12 +26,26 @@
     animation: preloader-fade 1.5s forwards;
 }
 
+@keyframes preloader-fade {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+        letter-spacing: 0.1em;
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        letter-spacing: 0.4em;
+    }
+}
+
 .preloader-line {
     width: 0;
     height: 1px;
     background: var(--gold-leaf);
     margin: 0 auto;
-    animation: preloader-line-grow 1s 0.5s forwards;
+    animation: preloader-line-grow 1.2s 0.8s forwards;
 }
 
 @keyframes preloader-fade {
@@ -133,6 +147,18 @@ body {
     overflow-x: hidden;
 }
 
+/* Luxury Scroll Progress */
+#scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: var(--gold-leaf);
+    z-index: 10001;
+    transition: width 0.1s ease;
+}
+
 h1,
 h2,
 h3,
@@ -144,7 +170,22 @@ h6 {
     font-weight: 400;
     letter-spacing: 0.1em;
     margin-bottom: var(--spacing-sm);
-    /* Reduced margin */
+}
+
+/* Text Reveal Animation */
+.reveal-text-container {
+    overflow: hidden;
+    display: inline-block;
+}
+
+.reveal-text {
+    display: block;
+    transform: translateY(110%);
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.visible .reveal-text {
+    transform: translateY(0);
 }
 
 a {
@@ -340,15 +381,14 @@ section {
     height: 400px;
     overflow: hidden;
     border-radius: 4px;
-    /* Slight rounding, mostly sharp for luxury */
     cursor: pointer;
     box-shadow: var(--shadow-soft);
-    transition: var(--transition-fast);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s;
+    perspective: 1000px;
 }
 
 .collection-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-glow);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), var(--shadow-glow);
 }
 
 /* Gold Shimmer Effect */
@@ -430,21 +470,55 @@ section {
 .step-item {
     padding: var(--spacing-md);
     border: 1px solid rgba(212, 175, 55, 0.1);
-    transition: var(--transition-fast);
+    transition: var(--transition-luxury);
+    position: relative;
+    overflow: hidden;
 }
 
 .step-item:hover {
     border-color: rgba(212, 175, 55, 0.4);
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0.03);
+    transform: translateY(-5px);
+}
+
+.step-icon-box {
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-accent);
+    font-size: 2.5rem;
+    height: 80px;
+    width: 80px;
+    margin: 0 auto var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 50%;
+    transition: var(--transition-fast);
+}
+
+.step-item:hover .step-icon-box {
+    background: var(--gold-leaf);
+    color: #000;
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+    border-color: transparent;
+}
+
+.step-icon {
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.step-item:hover .step-icon {
+    transform: scale(1.1);
 }
 
 .step-number {
     font-family: var(--font-heading);
-    font-size: 3rem;
-    color: var(--color-crimson-light);
-    opacity: 0.5;
-    margin-bottom: var(--spacing-sm);
+    font-size: 1.2rem;
+    color: var(--color-accent);
+    opacity: 0.6;
+    margin-bottom: 0.5rem;
     display: block;
+    letter-spacing: 0.2em;
 }
 
 /* Gallery */
@@ -663,16 +737,29 @@ h2 {
     box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
 }
 
+/* Mobile Responsive Tracking */
+@media (max-width: 1024px) {
+
+    .custom-cursor,
+    .custom-cursor-outline {
+        display: none !important;
+    }
+
+    body {
+        cursor: auto !important;
+    }
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
     :root {
-        --spacing-lg: 4rem;
-        --spacing-xl: 6rem;
+        --spacing-lg: 3rem;
+        --spacing-xl: 5rem;
     }
 
     .hero h1 {
-        font-size: 2.2rem;
-        line-height: 1.2;
+        font-size: 2.22rem;
+        line-height: 1.25;
     }
 
     .brand-story h2 {
@@ -686,64 +773,110 @@ h2 {
     .grid-3 {
         gap: 2rem;
     }
+
+    .collection-card {
+        height: 350px;
+    }
 }
 
 /* Specific Optimization for 6-inch screens (approx 480px and below) */
 @media (max-width: 480px) {
     .container {
-        padding: 0 1.5rem;
+        padding: 0 1.25rem;
     }
 
     .hero h1 {
         font-size: 2rem;
         padding-top: 2rem;
-        /* Give room for content if shifted */
+    }
+
+    /* Fixed preloader logo size for mobile */
+    .preloader-logo {
+        font-size: 2.2rem;
     }
 
     .hero p {
-        font-size: 1rem;
+        font-size: 0.95rem;
         margin-bottom: var(--spacing-lg);
     }
 
     .hero-bg {
-        background-position: 65% center;
-        /* Shift image to keep subject visible on tall phone screens */
+        background-position: 70% center;
     }
 
     .hero {
-        height: 100vh;
         height: 100svh;
-        /* Modern mobile viewport height */
+    }
+
+    .brand-story p {
+        font-size: 1rem;
     }
 
     .btn {
         width: 100%;
-        padding: 1rem;
+        padding: 1.1rem;
+        font-size: 0.85rem;
+    }
+
+    .collection-card {
+        height: 320px;
+    }
+
+    .card-title {
+        font-size: 1.3rem;
     }
 
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 3px;
-        padding: 0 3px;
+        gap: 2px;
+        padding: 0 2px;
     }
 
     .steps-grid {
-        gap: 2.5rem;
+        gap: 3rem;
     }
 
     .step-item {
         text-align: center;
+        padding: 2.5rem 1rem;
+    }
+
+    .step-icon-box {
+        width: 65px;
+        height: 65px;
+        font-size: 1.6rem;
     }
 
     .step-number {
-        font-size: 2.5rem;
+        font-size: 0.9rem;
+        letter-spacing: 0.15em;
+    }
+
+    .cte {
+        height: auto;
+        padding: var(--spacing-xl) 0;
     }
 
     .cte h2 {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
+        line-height: 1.4;
+    }
+
+    .footer-logo {
+        font-size: 1.5rem;
+    }
+
+    .footer-links a {
+        display: block;
+        margin: 1rem 0;
     }
 
     footer {
         padding: var(--spacing-lg) 0;
+    }
+
+    /* Reveal animation adjustment for mobile */
+    .reveal-text {
+        transition-duration: 0.8s;
     }
 }

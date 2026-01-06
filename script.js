@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('load', () => {
         setTimeout(() => {
             preloader.classList.add('fade-out');
+            // Trigger hero reveal
+            const heroHeader = document.querySelector('.hero h1');
+            if (heroHeader) heroHeader.classList.add('visible');
         }, 1500);
     });
 
@@ -54,6 +57,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     createParticles();
+
+    // Scroll Progress
+    window.addEventListener('scroll', () => {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById('scroll-progress').style.width = scrolled + '%';
+    });
+
+    // 3D Card Tilt Effect
+    const cards = document.querySelectorAll('.collection-card');
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)`;
+        });
+    });
 
     // Scroll Animation Observer via existing logic below...
     const observerOptions = {
