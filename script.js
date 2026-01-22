@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Trigger hero reveal
             const heroHeader = document.querySelector('.hero h1');
             if (heroHeader) heroHeader.classList.add('visible');
-        }, 1500);
+        }, 500);
     });
 
     // Custom Cursor
