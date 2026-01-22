@@ -7,7 +7,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: opacity 1s ease, visibility 1s;
+    transition: opacity 0.3s ease, visibility 0.3s;
 }
 
 .preloader-content {
@@ -23,7 +23,7 @@
     margin-bottom: 20px;
     opacity: 0;
     transform: translateY(20px);
-    animation: preloader-fade 1.5s forwards;
+    animation: preloader-fade 0.4s forwards;
 }
 
 @keyframes preloader-fade {
@@ -45,7 +45,7 @@
     height: 1px;
     background: var(--gold-leaf);
     margin: 0 auto;
-    animation: preloader-line-grow 1.2s 0.8s forwards;
+    animation: preloader-line-grow 0.3s 0.1s forwards;
 }
 
 @keyframes preloader-fade {
